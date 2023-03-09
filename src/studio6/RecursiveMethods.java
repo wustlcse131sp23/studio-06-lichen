@@ -1,5 +1,7 @@
 package studio6;
 
+import java.util.function.IntPredicate;
+
 import edu.princeton.cs.introcs.StdDraw;
 
 public class RecursiveMethods {
@@ -13,8 +15,11 @@ public class RecursiveMethods {
 	 */
 	public static double geometricSum(int n) {
 		
-			// FIXME compute the geometric sum for the first n terms recursively
+		if (n == 0) {
 			return 0;
+		}else {
+			return 1/Math.pow(2, n) + geometricSum(n-1);
+		}
 		
 	}
 
@@ -27,9 +32,14 @@ public class RecursiveMethods {
 	 * @return greatest common divisor of p and q
 	 */
 	public static int gcd(int p, int q) {
-		
-			// FIXME compute the gcd of p and q using recursion
-			return 0;
+		if (q==0) {
+			return p;
+		}else {
+			int temp = q;
+			q = p % q;
+			p = temp;
+			return gcd(p, q);
+		}
 		
 	}
 
@@ -43,9 +53,25 @@ public class RecursiveMethods {
 	 */
 	public static int[] toReversed(int[] array) {
 		
-			// FIXME create a helper method that can recursively reverse the given array
-			return new int[0];
+		int[] temp = new int[array.length];
+		if (array.length==0) {
+			return temp;
+		}else if(array.length == 1) {
+			temp[0] = array[0];
+			return temp;
+		}
+		else {
+			return updateReversed(array, temp, 0);
+		}
 		
+	}
+	public static int[] updateReversed(int[] array, int[] temp, int index) {
+		if (index == array.length) {
+			return temp;
+		}else {
+			temp[index] = array[array.length-index-1];
+			return updateReversed(array, temp, index+1);
+		}
 	}
 
 	/**
@@ -59,8 +85,14 @@ public class RecursiveMethods {
 	 */
 	public static void circlesUponCircles(double xCenter, double yCenter, double radius,
 			double radiusMinimumDrawingThreshold) {
-		
-		// FIXME
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.circle(xCenter, yCenter, radius);
+		if (radius>radiusMinimumDrawingThreshold*3) {
+			circlesUponCircles(xCenter, yCenter + radius, radius/3, radiusMinimumDrawingThreshold);
+			circlesUponCircles(xCenter, yCenter - radius, radius/3, radiusMinimumDrawingThreshold);
+			circlesUponCircles(xCenter - radius, yCenter, radius/3, radiusMinimumDrawingThreshold);
+			circlesUponCircles(xCenter + radius, yCenter, radius/3, radiusMinimumDrawingThreshold);
+		}
 	}
 
 }
